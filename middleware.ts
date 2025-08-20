@@ -1,45 +1,28 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
-import { verifyToken } from "@/lib/auth"
+import { withAuth } from "next-auth/middleware"
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("auth-token")?.value
-  const { pathname } = request.nextUrl
+export default withAuth(
+  function middleware(req) {
+    // Add any additional middleware logic here
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        // Protect admin routes
+        if (req.nextUrl.pathname.startsWith("/admin")) {
+          return token?.isAdmin === true
+        }
 
-  // Public routes that don't require authentication
-  const publicRoutes = ["/", "/login", "/register", "/api/auth/login", "/api/auth/register"]
+        // Protect user routes (require any authenticated user)
+        if (req.nextUrl.pathname.startsWith("/profile") || req.nextUrl.pathname.startsWith("/my-numbers")) {
+          return !!token
+        }
 
-  // Admin routes that require admin role
-  const adminRoutes = ["/admin"]
-
-  // If accessing public routes, allow
-  if (publicRoutes.includes(pathname)) {
-    return NextResponse.next()
-  }
-
-  // If no token and trying to access protected route, redirect to login
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url))
-  }
-
-  // Verify token
-  const decoded = verifyToken(token)
-  if (!decoded) {
-    const response = NextResponse.redirect(new URL("/login", request.url))
-    response.cookies.delete("auth-token")
-    return response
-  }
-
-  // Check admin routes
-  if (adminRoutes.some((route) => pathname.startsWith(route))) {
-    if (decoded.role !== "admin") {
-      return NextResponse.redirect(new URL("/", request.url))
-    }
-  }
-
-  return NextResponse.next()
-}
+        return true
+      },
+    },
+  },
+)
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|images|scripts).*)"],
+  matcher: ["/admin/:path*", "/profile/:path*", "/my-numbers/:path*"],
 }

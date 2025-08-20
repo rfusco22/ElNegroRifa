@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Montserrat, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/auth-context"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -40,8 +41,10 @@ html {
 }
         `}</style>
       </head>
-      <body className="dark">
-        <AuthProvider>{children}</AuthProvider>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

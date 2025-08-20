@@ -8,23 +8,18 @@ import { WhatsAppChat } from "@/components/whatsapp-chat"
 import { Button } from "@/components/ui/button"
 import { Moon, Sun, LogOut } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
+import { useTheme } from "next-themes"
 import Link from "next/link"
 
 export default function Home() {
   const [selectedNumbers, setSelectedNumbers] = useState<string[]>([])
-  const [isDark, setIsDark] = useState(true)
   const [currentRaffle, setCurrentRaffle] = useState<any>(null)
   const { user, logout, loading } = useAuth()
+  const { theme, setTheme } = useTheme()
   const totalAmount = selectedNumbers.length * 400
 
   useEffect(() => {
     fetchCurrentRaffle()
-    const savedTheme = localStorage.getItem("theme")
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    const shouldBeDark = savedTheme ? savedTheme === "dark" : systemPrefersDark
-
-    setIsDark(shouldBeDark)
-    document.documentElement.classList.toggle("dark", shouldBeDark)
   }, [])
 
   const fetchCurrentRaffle = async () => {
@@ -40,10 +35,7 @@ export default function Home() {
   }
 
   const toggleTheme = () => {
-    const newTheme = !isDark
-    setIsDark(newTheme)
-    document.documentElement.classList.toggle("dark", newTheme)
-    localStorage.setItem("theme", newTheme ? "dark" : "light")
+    setTheme(theme === "dark" ? "light" : "dark")
   }
 
   const handlePurchaseComplete = () => {
@@ -108,7 +100,7 @@ export default function Home() {
                 onClick={toggleTheme}
                 className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
               >
-                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
             </div>
           </div>

@@ -22,7 +22,7 @@ export default function RegisterPage() {
     last_name: "",
     phone: "",
     cedula: "",
-    city: "", // Added city field
+    city: "",
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -60,7 +60,7 @@ export default function RegisterPage() {
         last_name: formData.last_name,
         phone: formData.phone,
         cedula: formData.cedula,
-        city: formData.city, // Added city to registration
+        city: formData.city,
       })
       router.push("/")
     } catch (err) {
@@ -73,15 +73,6 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="mb-4">
-          <Button asChild variant="ghost" size="sm" className="text-accent hover:text-accent/80">
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver al inicio
-            </Link>
-          </Button>
-        </div>
-
         <div className="text-center mb-8">
           <img src="/images/rifas-logo-new.png" alt="Rifas EL NEGRO" className="h-16 w-auto mx-auto rounded-lg mb-4" />
           <h1 className="text-3xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
@@ -225,6 +216,15 @@ export default function RegisterPage() {
             </div>
           </CardContent>
         </Card>
+
+        <div className="mt-6 text-center">
+          <Button asChild variant="ghost" size="sm" className="text-accent hover:text-accent/80">
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Volver al inicio
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   )

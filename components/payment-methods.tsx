@@ -1,31 +1,30 @@
 "use client"
 
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Smartphone, Bitcoin, DollarSign, Loader2 } from "lucide-react"
+import { Smartphone, Bitcoin, DollarSign } from "lucide-react"
 
 interface PaymentMethodsProps {
   selectedNumbers: string[]
   totalAmount: number
-  rifaId: number
 }
 
-export function PaymentMethods({ selectedNumbers, totalAmount, rifaId }: PaymentMethodsProps) {
-  const { data: session } = useSession()
+export function PaymentMethods({ selectedNumbers, totalAmount }: PaymentMethodsProps) {
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null)
-  const [paymentReference, setPaymentReference] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [success, setSuccess] = useState("")
-  const [error, setError] = useState("")
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    reference: "",
+  })
 
   const paymentMethods = [
     {
-      id: "pago_movil",
+      id: "pago-movil",
       name: "Pago Móvil",
       icon: Smartphone,
       details: "Banco: Banesco • CI: 12.345.678 • Teléfono: 0424-1234567",
@@ -47,43 +46,11 @@ export function PaymentMethods({ selectedNumbers, totalAmount, rifaId }: Payment
     },
   ]
 
-  const handleSubmitPayment = async () => {
-    if (!selectedMethod || selectedNumbers.length === 0 || !paymentReference.trim()) return
+  const handleSubmitPayment = () => {
+    if (!selectedMethod || selectedNumbers.length === 0) return
 
-    setIsSubmitting(true)
-    setError("")
-    setSuccess("")
-
-    try {
-      const response = await fetch("/api/numbers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rifaId,
-          numbers: selectedNumbers,
-          paymentMethod: selectedMethod,
-          paymentReference: paymentReference.trim(),
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setSuccess("¡Números reservados exitosamente! Espera la validación del pago.")
-        setSelectedMethod(null)
-        setPaymentReference("")
-        // Clear selected numbers after successful submission
-        window.location.reload()
-      } else {
-        setError(data.error || "Error al procesar el pago")
-      }
-    } catch (error) {
-      setError("Error al procesar el pago")
-    } finally {
-      setIsSubmitting(false)
-    }
+    // Aquí iría la lógica de procesamiento de pago
+    alert(`Pago procesado por ${selectedMethod}. Números: ${selectedNumbers.join(", ")}. Total: ${totalAmount}Bs`)
   }
 
   if (selectedNumbers.length === 0) {
@@ -105,18 +72,6 @@ export function PaymentMethods({ selectedNumbers, totalAmount, rifaId }: Payment
         <p className="text-muted-foreground">Total a pagar: {totalAmount.toLocaleString()}Bs</p>
       </CardHeader>
       <CardContent className="space-y-6">
-        {error && (
-          <Alert className="border-destructive/50 text-destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {success && (
-          <Alert className="border-accent/50 text-accent">
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
-
         <div className="grid gap-4">
           {paymentMethods.map((method) => {
             const Icon = method.icon
@@ -144,36 +99,53 @@ export function PaymentMethods({ selectedNumbers, totalAmount, rifaId }: Payment
 
         {selectedMethod && (
           <div className="space-y-4 p-4 bg-card rounded-lg border border-accent">
-            <h3 className="font-bold text-accent">Información de Pago</h3>
-            <div className="space-y-4">
+            <h3 className="font-bold text-accent">Información del Comprador</h3>
+            <div className="grid gap-4">
               <div>
-                <Label htmlFor="reference">Referencia de Pago *</Label>
+                <Label htmlFor="name">Nombre Completo</Label>
+                <Input
+                  id="name"
+                  value={customerInfo.name}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                  placeholder="Tu nombre completo"
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Teléfono</Label>
+                <Input
+                  id="phone"
+                  value={customerInfo.phone}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                  placeholder="0424-1234567"
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={customerInfo.email}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                  placeholder="tu@email.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="reference">Referencia de Pago</Label>
                 <Textarea
                   id="reference"
-                  value={paymentReference}
-                  onChange={(e) => setPaymentReference(e.target.value)}
-                  placeholder="Número de referencia, ID de transacción o comprobante de pago"
+                  value={customerInfo.reference}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, reference: e.target.value })}
+                  placeholder="Número de referencia o comprobante de pago"
                   rows={3}
-                  className="border-accent/30 focus:border-accent"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Proporciona toda la información necesaria para validar tu pago
-                </p>
               </div>
             </div>
             <Button
               onClick={handleSubmitPayment}
               className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold text-lg py-3"
-              disabled={!paymentReference.trim() || isSubmitting}
+              disabled={!customerInfo.name || !customerInfo.phone || !customerInfo.reference}
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                `Confirmar Pago - ${totalAmount.toLocaleString()}Bs`
-              )}
+              Confirmar Pago - {totalAmount.toLocaleString()}Bs
             </Button>
           </div>
         )}

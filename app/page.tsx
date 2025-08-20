@@ -55,7 +55,7 @@ export default function Home() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <img
-            src="/images/rifas-logo.jpg"
+            src="/rifas-el-negro-logo-golden.png"
             alt="Rifas EL NEGRO"
             className="h-20 w-auto mx-auto rounded-lg mb-4 golden-glow"
           />
@@ -73,11 +73,9 @@ export default function Home() {
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <img src="/images/rifas-logo.jpg" alt="Rifas EL NEGRO" className="h-12 w-auto rounded-lg" />
+                <img src="/rifas-el-negro-logo-golden.png" alt="Rifas EL NEGRO" className="h-12 w-auto rounded-lg" />
                 <div>
-                  <h1 className="text-2xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
-                    Rifas EL NEGRO
-                  </h1>
+                  <h1 className="text-2xl font-black text-accent font-serif">Rifas EL NEGRO</h1>
                   <p className="text-sm text-muted-foreground">Página certificada</p>
                 </div>
               </div>
@@ -101,16 +99,11 @@ export default function Home() {
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto">
               <img
-                src="/images/rifas-flyer.jpg"
+                src="/rifas-el-negro-flyer.png"
                 alt="Rifas EL NEGRO - $1000 a repartir"
                 className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-8 float-animation"
               />
-              <h2
-                className="text-4xl md:text-6xl font-black text-accent mb-4"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                ¡Participa Ya!
-              </h2>
+              <h2 className="text-4xl md:text-6xl font-black text-accent mb-4 font-serif">¡Participa Ya!</h2>
               <p className="text-xl text-muted-foreground mb-8">$1000 a repartir en 3 premios • Juega el 31/10/2025</p>
               {session && <p className="text-accent font-medium">Bienvenido, {session.user?.name}!</p>}
             </div>
@@ -147,9 +140,7 @@ export default function Home() {
           <section className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <h3 className="text-2xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
-                  ¿Cómo Participar?
-                </h3>
+                <h3 className="text-2xl font-black text-accent font-serif">¿Cómo Participar?</h3>
                 <ol className="space-y-2 text-muted-foreground">
                   <li>1. Regístrate o inicia sesión</li>
                   <li>2. Selecciona tus números de la suerte</li>
@@ -159,9 +150,7 @@ export default function Home() {
                 </ol>
               </div>
               <div className="space-y-4">
-                <h3 className="text-2xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
-                  Métodos de Pago
-                </h3>
+                <h3 className="text-2xl font-black text-accent font-serif">Métodos de Pago</h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>• Pago Móvil (Banesco)</li>
                   <li>• Binance Pay (USDT/BUSD)</li>
@@ -195,7 +184,7 @@ export default function Home() {
             </div>
             <div className="border-t border-accent/20 mt-8 pt-8 text-center">
               <div className="flex justify-center items-center gap-4 mb-4">
-                <img src="/triple-tachira-logo.png" alt="Triple Táchira" className="h-8" />
+                <img src="/placeholder-eyhgl.png" alt="Triple Táchira" className="h-8" />
                 <img src="/conalot-logo.png" alt="CONALOT" className="h-8" />
               </div>
               <p className="text-sm opacity-75">© 2025 Rifas EL NEGRO. Todos los derechos reservados.</p>

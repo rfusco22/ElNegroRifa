@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 export default function RegisterPage() {
@@ -21,6 +22,7 @@ export default function RegisterPage() {
     last_name: "",
     phone: "",
     cedula: "",
+    city: "", // Added city field
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -58,6 +60,7 @@ export default function RegisterPage() {
         last_name: formData.last_name,
         phone: formData.phone,
         cedula: formData.cedula,
+        city: formData.city, // Added city to registration
       })
       router.push("/")
     } catch (err) {
@@ -70,8 +73,17 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        <div className="mb-4">
+          <Button asChild variant="ghost" size="sm" className="text-accent hover:text-accent/80">
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Volver al inicio
+            </Link>
+          </Button>
+        </div>
+
         <div className="text-center mb-8">
-          <img src="/images/rifas-logo.jpg" alt="Rifas EL NEGRO" className="h-16 w-auto mx-auto rounded-lg mb-4" />
+          <img src="/images/rifas-logo-new.png" alt="Rifas EL NEGRO" className="h-16 w-auto mx-auto rounded-lg mb-4" />
           <h1 className="text-3xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
             Crear Cuenta
           </h1>
@@ -136,6 +148,7 @@ export default function RegisterPage() {
                   name="cedula"
                   value={formData.cedula}
                   onChange={handleChange}
+                  placeholder="V-12345678"
                   required
                   className="border-accent/20 focus:border-accent"
                 />
@@ -148,6 +161,20 @@ export default function RegisterPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  placeholder="0424-1234567"
+                  required
+                  className="border-accent/20 focus:border-accent"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="city">Ciudad donde vive</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="Caracas, Valencia, Maracaibo..."
                   required
                   className="border-accent/20 focus:border-accent"
                 />

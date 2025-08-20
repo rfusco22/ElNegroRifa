@@ -19,6 +19,7 @@ interface Purchase {
   email: string
   phone: string
   cedula: string
+  city: string // Added city field
   raffle_title: string
   numbers: string
   total_amount: number
@@ -263,16 +264,19 @@ export default function AdminDashboard() {
                         <div>
                           <h3 className="font-bold text-accent">Información del Comprador</h3>
                           <p>
-                            <strong>Nombre:</strong> {purchase.first_name} {purchase.last_name}
-                          </p>
-                          <p>
-                            <strong>Email:</strong> {purchase.email}
-                          </p>
-                          <p>
-                            <strong>Teléfono:</strong> {purchase.phone}
+                            <strong>Nombre completo:</strong> {purchase.first_name} {purchase.last_name}
                           </p>
                           <p>
                             <strong>Cédula:</strong> {purchase.cedula}
+                          </p>
+                          <p>
+                            <strong>Número de teléfono:</strong> {purchase.phone}
+                          </p>
+                          <p>
+                            <strong>Ciudad donde vive:</strong> {purchase.city}
+                          </p>
+                          <p>
+                            <strong>Email:</strong> {purchase.email}
                           </p>
                         </div>
                         <div>
@@ -284,7 +288,7 @@ export default function AdminDashboard() {
                             <strong>Total:</strong> {purchase.total_amount.toLocaleString()}Bs
                           </p>
                           <p>
-                            <strong>Método:</strong> {purchase.payment_method}
+                            <strong>Método de pago:</strong> {purchase.payment_method}
                           </p>
                           <p>
                             <strong>Referencia:</strong> {purchase.payment_reference}

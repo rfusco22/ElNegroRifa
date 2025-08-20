@@ -4,9 +4,9 @@ import { query } from "@/lib/database"
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, first_name, last_name, phone, cedula } = await request.json()
+    const { email, password, first_name, last_name, phone, cedula, city } = await request.json()
 
-    if (!email || !password || !first_name || !last_name || !phone || !cedula) {
+    if (!email || !password || !first_name || !last_name || !phone || !cedula || !city) {
       return NextResponse.json({ error: "Todos los campos son requeridos" }, { status: 400 })
     }
 
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
       last_name,
       phone,
       cedula,
+      city, // Added city to user creation
     })
 
     const token = generateToken({
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
       last_name: user.last_name,
       phone: user.phone,
       cedula: user.cedula,
+      city: user.city, // Added city to token
       role: user.role,
       created_at: user.created_at,
       updated_at: user.updated_at,

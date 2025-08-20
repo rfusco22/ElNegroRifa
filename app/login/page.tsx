@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 export default function LoginPage() {
@@ -38,8 +39,17 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        <div className="mb-4">
+          <Button asChild variant="ghost" size="sm" className="text-accent hover:text-accent/80">
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Volver al inicio
+            </Link>
+          </Button>
+        </div>
+
         <div className="text-center mb-8">
-          <img src="/images/rifas-logo.jpg" alt="Rifas EL NEGRO" className="h-16 w-auto mx-auto rounded-lg mb-4" />
+          <img src="/images/rifas-logo-new.png" alt="Rifas EL NEGRO" className="h-16 w-auto mx-auto rounded-lg mb-4" />
           <h1 className="text-3xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
             Iniciar Sesión
           </h1>

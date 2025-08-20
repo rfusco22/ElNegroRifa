@@ -19,6 +19,12 @@ export default function Home() {
 
   useEffect(() => {
     fetchCurrentRaffle()
+    const savedTheme = localStorage.getItem("theme")
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+    const shouldBeDark = savedTheme ? savedTheme === "dark" : systemPrefersDark
+
+    setIsDark(shouldBeDark)
+    document.documentElement.classList.toggle("dark", shouldBeDark)
   }, [])
 
   const fetchCurrentRaffle = async () => {
@@ -26,7 +32,7 @@ export default function Home() {
       const response = await fetch("/api/raffles")
       const data = await response.json()
       if (response.ok && data.raffles.length > 0) {
-        setCurrentRaffle(data.raffles[0]) // Get the first active raffle
+        setCurrentRaffle(data.raffles[0])
       }
     } catch (error) {
       console.error("Error fetching raffle:", error)
@@ -34,13 +40,14 @@ export default function Home() {
   }
 
   const toggleTheme = () => {
-    setIsDark(!isDark)
-    document.documentElement.classList.toggle("dark")
+    const newTheme = !isDark
+    setIsDark(newTheme)
+    document.documentElement.classList.toggle("dark", newTheme)
+    localStorage.setItem("theme", newTheme ? "dark" : "light")
   }
 
   const handlePurchaseComplete = () => {
     setSelectedNumbers([])
-    // Optionally refresh available numbers
     fetchCurrentRaffle()
   }
 
@@ -59,7 +66,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img src="/images/rifas-logo.jpg" alt="Rifas EL NEGRO" className="h-12 w-auto rounded-lg" />
+              <img src="/images/rifas-logo-new.png" alt="Rifas EL NEGRO" className="h-12 w-auto rounded-lg" />
               <div>
                 <h1 className="text-2xl font-black text-accent" style={{ fontFamily: "var(--font-heading)" }}>
                   Rifas EL NEGRO
@@ -130,10 +137,8 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 space-y-12">
-        {/* Prizes Display */}
         <PrizesDisplay />
 
-        {/* Number Selection */}
         {currentRaffle && (
           <NumberSelector
             selectedNumbers={selectedNumbers}
@@ -142,7 +147,6 @@ export default function Home() {
           />
         )}
 
-        {/* Payment Methods */}
         {currentRaffle && (
           <PaymentMethods
             selectedNumbers={selectedNumbers}
